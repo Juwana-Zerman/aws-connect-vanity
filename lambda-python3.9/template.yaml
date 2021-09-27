@@ -21,7 +21,7 @@ Resources:
       Policies: AmazonDynamoDBFullAccess
 
   ConnectPerm:
-    Type: AWS:Lambda:Permission
+    Type: AWS::Lambda::Permission
     DependsOn: LambdaFunction
     Properties:
       Action: lambda:invokeFunction
@@ -30,11 +30,14 @@ Resources:
       SourceAccount: !Ref AWS::AccountId
 
   DynamoDBTable:
-    Type: AWS:DynamoDB::Table
+    Type: AWS::DynamoDB::Table
     Properties:
-      PrimaryKey:
-        Name: phoneNum
-        Type: String
+      AttributeDefinitions:
+      - AttributeName: phoneNum
+        AttributeType: String
+      KeySchema:
+        - AttributeName: phoneNum
+          KeyType: HASH
       TableName: customer_Vanity_Numbers
 
 Outputs:
