@@ -174,7 +174,7 @@ def find_valid_word_substrings(wordified_word):
 
     if DICTIONARY_TRIE.has_key(wordified_word):
         return [wordified_word]
-    # Some combination of continous words should exist
+    # Some combination of continuos words should exist
     for index, _ in enumerate(wordified_word):
         if DICTIONARY_TRIE.has_key(wordified_word[:index + 1]) and \
                 DICTIONARY_TRIE.has_key(wordified_word[index + 1:]):
@@ -193,7 +193,7 @@ def is_valid_word_or_prefix(char_prefix):
 
     if DICTIONARY_TRIE.has_key(char_prefix) or DICTIONARY_TRIE.has_subtrie(char_prefix):
         return True
-    # Some combination of continous words should exist
+    # Some combination of continuous words should exist
     for index, _ in enumerate(char_prefix):
         if DICTIONARY_TRIE.has_key(char_prefix[:index + 1]) and \
                 DICTIONARY_TRIE.has_subtrie(char_prefix[index + 1:]):
@@ -225,7 +225,7 @@ def evaluate_wordified_number(wordified_number):
 
     is_valid_wordified_phone_number = True
     max_length_word_substring = 0
-    max_number_of_continous_chars_in_word = 0
+    max_number_of_continuous_chars_in_word = 0
 
     all_valid_word_substrings = find_all_valid_word_substrings(
         wordified_number)
@@ -235,11 +235,11 @@ def evaluate_wordified_number(wordified_number):
         is_valid_wordified_phone_number = False
     else:
         for substring in all_valid_word_substrings:
-            max_number_of_continous_chars_in_word = max(
-                len(substring), max_number_of_continous_chars_in_word)
+            max_number_of_continuous_chars_in_word = max(
+                len(substring), max_number_of_continuous_chars_in_word)
             valid_word_substrings = find_valid_word_substrings(substring)
             for valid_substring in valid_word_substrings:
                 max_length_word_substring = max(
                     len(valid_substring), max_length_word_substring)
 
-    return (is_valid_wordified_phone_number, max_number_of_continous_chars_in_word, max_length_word_substring)
+    return (is_valid_wordified_phone_number, max_number_of_continuous_chars_in_word, max_length_word_substring)
