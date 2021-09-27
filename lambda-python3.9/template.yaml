@@ -39,6 +39,9 @@ Resources:
         - AttributeName: phoneNum
           KeyType: HASH
       TableName: customer_Vanity_Numbers
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -50,6 +53,3 @@ Outputs:
   LambdaFunction:
     Description: "Lambda Function for Connect Vanity Numbers ARN"
     Value: !GetAtt LambdaFunction.Arn
-  LambdaFunctionIamRole:
-    Description: "Implicit IAM Role created for Vanity Number function"
-    Value: !GetAtt LambdaFunctionRole.Arn
