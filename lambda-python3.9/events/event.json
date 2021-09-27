@@ -7,7 +7,7 @@
        "Channel": "VOICE",
        "ContactId": "",
        "CustomerEndpoint": {
-          "Address": "+17440257086",
+          "Address": "+1234567890",
           "Type": "TELEPHONE_NUMBER"
        },
       "InitialContactId": "",
