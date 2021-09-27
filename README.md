@@ -7,11 +7,18 @@ An Amazon Connect contact flow will be created that looks at the caller's phone 
 2. Did I take any shortcuts that would be a bad practice in productions?
 3. With more time, what other features would I have included? Anything to add for the "real world"?
 
+### Steps
 
-### Steps 
-
-
-
+##### Create Local DynamoDB Table (for testing)
+Locally, I used the following script to create a DynamoDB table. The script can be found in the AWS documentation [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.CLI.html).
+```
+aws dynamodb create-table \
+    --table-name customer_Vanity_Numbers \
+    --attribute-definitions \
+        AttributeName=phoneNum,AttributeType=S \
+    --key-schema AttributeName=phoneNum,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+```
 
 
 ### Dependencies
@@ -21,4 +28,3 @@ An Amazon Connect contact flow will be created that looks at the caller's phone 
 - Python
 - Amazon Lex
 - Git and GitHub
-
