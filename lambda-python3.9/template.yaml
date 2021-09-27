@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   lambda-python3.9
 
-  Sample SAM Template for lambda-python3.9
+  Sample SAM Template for lambda-python3.9 AWS Connect Vanity Number
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -14,17 +14,11 @@ Resources:
   LambdaFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello_world/
+      CodeUri: vanitynumber/
       Handler: app.lambda_handler
       Runtime: python3.9
       Role: arn:aws:iam::766162985452:role/myLambdaRole
-      Policies:
-      - Statement:
-          - Effect: Allow
-            Action:
-              - "dynamodb:*"
-            Resource:
-              - !GetAtt DynamoDBTable.Arn
+      Policies: AmazonDynamoDBFullAccess
 
   ConnectPerm:
     Type: AWS:Lambda:Permission
@@ -38,15 +32,9 @@ Resources:
   DynamoDBTable:
     Type: AWS:DynamoDB::Table
     Properties:
-      AttributeDefinitions:
-      - AttributeName: phoneNum
-        AttributeType: String
-      KeySchema:
-      - AttributeName: phoneNum
-        KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
-      SSESpecification:
-        SSEEnabled: true
+      PrimaryKey:
+        Name: phoneNum
+        Type: String
       TableName: customer_Vanity_Numbers
 
 Outputs:
@@ -57,8 +45,8 @@ Outputs:
   #   Description: "Lambda Function for Connect Vanity Numbers"
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   LambdaFunction:
-    Description: "Lambda Function ARN"
+    Description: "Lambda Function for Connect Vanity Numbers ARN"
     Value: !GetAtt LambdaFunction.Arn
   LambdaFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World/Vanity Number function"
+    Description: "Implicit IAM Role created for Vanity Number function"
     Value: !GetAtt LambdaFunctionRole.Arn
