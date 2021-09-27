@@ -5,7 +5,12 @@ An Amazon Connect contact flow will be created that looks at the caller's phone 
 
 1. Include explanation for why I chose to implement the solution the way I did and any struggles and problems I had to overcome while implementing the solution.
 2. Did I take any shortcuts that would be a bad practice in productions?
-3. With more time, what other features would I have included? Anything to add for the "real world"? I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits. For ease of implementing this project only uses US numbers and in the real world a client could need this feature to use international numbers. Also, this feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time.
+3. With more time, what other features would I have included? Anything to add for the "real world"?
+ - 1. I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits.
+ - 2. For ease of implementing, this project only uses US numbers and in the real world a client could need this feature to possibly use international numbers so that would need to be integrated.
+ - 3. This feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time. This would require adding a customer input block into the contact flow.
+ - 4. Speaking of customer input blocks, maybe a feature could be to ask the caller's input on if they like a certain vanity number response, and if not create another, or let them choose an option to make as many vanity numbers as they like and include an option to exit the feature.
+ - 5. I would have liked to check out a more comprehensive dictionary list of words.
 
 ### Steps
 
