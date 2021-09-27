@@ -34,7 +34,7 @@ Resources:
     Properties:
       AttributeDefinitions:
       - AttributeName: phoneNum
-        AttributeType: String
+        AttributeType: S
       KeySchema:
         - AttributeName: phoneNum
           KeyType: HASH
