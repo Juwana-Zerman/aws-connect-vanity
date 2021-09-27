@@ -1,15 +1,17 @@
 import json
 import boto3
 from botocore import endpoint
-import phonenumbers
+#from phonenumbers.phonenumberutil import phonenumbers
 import os
-import vanitynumber
+#import vanitynumber
 from wordify import *
+
 
 # Help with examples working with DynamoDB, Boto3, and Python https://highlandsolutions.com/blog/hands-on-examples-for-working-with-dynamodb-boto3-and-python
 
 # Python phonenumbers module https://pypi.org/project/phonenumbers/
 def phoneNumberParse(phoneNum):
+    import phonenumbers
     try:
         number = phonenumbers.parse(phoneNum, None)
         if phonenumbers.is_valid_number(number):
@@ -24,7 +26,7 @@ def phoneNumberParse(phoneNum):
         return None
 
 # CRUD help from AWS Documentation https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.03.html#GettingStarted.Python.03.03
-def update_phoneNumber(phoneNum, vanitynumber, dynamodb=None):
+def update_phoneNumber(phoneNum, vanityNumber, dynamodb=None):
     if not dynamodb:
         dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000').Table('customer_Vanity_Numbers')
 
@@ -33,7 +35,7 @@ def update_phoneNumber(phoneNum, vanitynumber, dynamodb=None):
     return table.update_item(
             Key={
                 'ContactNumber': phoneNum,
-                'VanityNumbers': vanitynumber
+                'VanityNumbers': vanityNumber
             },
             ReturnValues= "UPDATED_NEW"
     )
@@ -72,10 +74,10 @@ def lambda_handler(event, context):
 
     number = str(phoneNumberParse(phoneNumber).get('phoneNum'))
     print("The contact number is: " + phoneNumber)
-    vanitynumber = find_words_from_numbers(
+    vanityNumber = find_words_from_numbers(
         number, max_number_results_to_output=5)
     if not get_phoneNumber(phoneNumber):
-        update_phoneNumber(phoneNumber, vanitynumber)
+        update_phoneNumber(phoneNumber, vanityNumber)
     print("The best vanity numbers for this number are: " + {get_phoneNumber(phoneNumber).get('VanityNumbers')})
     return {"VanityNumber1": get_phoneNumber(phoneNumber).get('VanityNumbers')[0],
             "VanityNumber2": get_phoneNumber(phoneNumber).get('VanityNumbers')[1],
