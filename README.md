@@ -1,11 +1,11 @@
 # aws-connect-vanity
 
 The purpose of this project is to create a Lambda that converts a caller's phone number to vanity numbers when they call into an Amazon Connect Contact Center. The best 5 resulting vanity numbers along with the caller's number will be saved in a DynamoDB table.
-An Amazon Connect contact flow will be created that looks at the caller's phone number and says 3 vanity possibilities that come back from the Lambda function.
+An Amazon Connect contact flow will be created that looks at the caller's phone number and repeats the vanity possibilities that come back from the Lambda function. The requirements state to provide 3 vanity numbers to the caller, but since the requirements were to get 5 vanity numbers I had the prompt say all 5 since I didn't have time to set up some type of ranking to choose the best of the 5.
 
 1. Include explanation for why I chose to implement the solution the way I did and any struggles and problems I had to overcome while implementing the solution.
 2. Did I take any shortcuts that would be a bad practice in productions?
-3. With more time, what other features would I have included? Anything to add for the "real world"?
+3. With more time, what other features would I have included? Anything to add for the "real world"? I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits. For ease of implementing this project only uses US numbers and in the real world a client could need this feature to use international numbers. Also, this feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time.
 
 ### Steps
 
@@ -22,11 +22,12 @@ aws dynamodb create-table \
 
 
 ### Dependencies
-- Amazon Connect
-- AWS Lambda
-- DynamoDB
-- Python
-- Amazon Lex
+- [Amazon Connect](https://aws.amazon.com/connect/?nc2=h_ql_prod_ce_con)
+- [AWS Lambda](https://aws.amazon.com/lambda/?nc2=h_ql_prod_fs_lbd)
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Python](https://www.python.org/)
+- [Docker](https://www.docker.com/)
+- SAM CLI - [AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 - Git and GitHub
 
 ###### Code From SAM CLI README.md to Incorporate
