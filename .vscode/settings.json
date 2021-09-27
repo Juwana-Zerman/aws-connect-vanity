@@ -4,6 +4,7 @@
         "deque",
         "heapq",
         "nlargest",
+        "phonenumberutil",
         "vanitynumber",
         "Wordification",
         "wordifications",
