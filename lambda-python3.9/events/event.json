@@ -7,7 +7,7 @@
        "Channel": "VOICE",
        "ContactId": "",
        "CustomerEndpoint": {
-          "Address": "+1234567890",
+          "Address": "+13234567890",
           "Type": "TELEPHONE_NUMBER"
        },
       "InitialContactId": "",
@@ -16,7 +16,7 @@
       "PreviousContactId": "",
       "Queue": "",
       "SystemEndpoint": {
-        "Address": "1234567890",
+        "Address": "13234567890",
         "Type": "TELEPHONE_NUMBER"
       }
     }
