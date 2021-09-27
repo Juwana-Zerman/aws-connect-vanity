@@ -1,6 +1,7 @@
 import json
 import boto3
 from botocore import endpoint
+
 #from phonenumbers.phonenumberutil import phonenumbers
 import os
 #import vanitynumber
@@ -30,15 +31,16 @@ def update_phoneNumber(phoneNum, vanityNumber, dynamodb=None):
     if not dynamodb:
         dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000').Table('customer_Vanity_Numbers')
 
-    table = dynamodb.Table('customer_Vanity_Numbers')
+    table = boto3.resource('dynamodb').Table('customer_Vanity_Numbers')
 
-    return table.update_item(
-            Key={
-                'ContactNumber': phoneNum,
-                'VanityNumbers': vanityNumber
-            },
-            ReturnValues= "UPDATED_NEW"
+    table.put_item(
+        Item={
+            'phoneNum': phoneNum,
+            'VanityNumbers': vanityNumber
+        }
     )
+    return {"success": "The data was added"}
+
 # CRUD help from AWS Documentation https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.03.html#GettingStarted.Python.03.03
 # and
 # Query help from GetCustomerInfo https://blogs.perficient.com/2017/10/11/3-steps-on-creating-premium-caller-contact-flow-with-amazon-connect/
@@ -46,11 +48,11 @@ def get_phoneNumber(phoneNum, dynamodb=None):
     if not dynamodb:
         dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000').Table('customer_Vanity_Numbers')
 
-    table = dynamodb.Table('customer_Vanity_Numbers')
+    table = boto3.resource('dynamodb').Table('customer_Vanity_Numbers')
 
     try:
         response = table.query(
-            KeyConditionExpression="ContactNumber = :v1",
+            KeyConditionExpression="phoneNum = :v1",
             ExpressionAttributeValues={
                 ':v1': phoneNum,
             },
@@ -78,7 +80,8 @@ def lambda_handler(event, context):
         number, max_number_results_to_output=5)
     if not get_phoneNumber(phoneNumber):
         update_phoneNumber(phoneNumber, vanityNumber)
-    print("The best vanity numbers for this number are: " + {get_phoneNumber(phoneNumber).get('VanityNumbers')})
+    print(f"The best vanity numbers for this number are {get_phoneNumber(phoneNumber).get('VanityNumbers')}")
+
     return {"VanityNumber1": get_phoneNumber(phoneNumber).get('VanityNumbers')[0],
             "VanityNumber2": get_phoneNumber(phoneNumber).get('VanityNumbers')[1],
             "VanityNumber3": get_phoneNumber(phoneNumber).get('VanityNumbers')[2],
