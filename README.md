@@ -1,14 +1,18 @@
 # aws-connect-vanity
 
+### Description
 The purpose of this project is to create a Lambda that converts a caller's phone number to vanity numbers when they call into an Amazon Connect Contact Center. The best 5 resulting vanity numbers along with the caller's number will be saved in a DynamoDB table.
 An Amazon Connect contact flow will be created that looks at the caller's phone number and repeats the vanity possibilities that come back from the Lambda function. The requirements state to provide 3 vanity numbers to the caller, but since the requirements were to get 5 vanity numbers I had the prompt say all 5 since I didn't have time to set up some type of ranking to choose the best of the 5.
 
-### Instructions to build this project and test locally
+The live number for this Amazon Connect environment is: **+1 213-737-8507**
+(for a short while)
+
+
 
 1. Include explanation for why I chose to implement the solution the way I did and any struggles and problems I had to overcome while implementing the solution.
-2. Did I take any shortcuts that would be a bad practice in productions?
 
-####With more time, other features I would have included or implemented for the "real world"!
+
+#### With more time, other features I would have included or implemented for the "real world"!
  1. I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits.
  2. For ease of implementing, this project only uses US numbers and in the real world a client could need this feature to possibly use international numbers so that would need to be integrated.
  3. This feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time. This would require adding a customer input block into the contact flow.
@@ -16,7 +20,16 @@ An Amazon Connect contact flow will be created that looks at the caller's phone 
  5. I would have liked to check out a more comprehensive dictionary list of words.
  6. I would have also liked to test and try different ways to get the voice prompt to pronounce the vanity number output read to the caller. It was not natural sounding and it would need to be for the "real world".
 
-### Steps
+#### Shortcuts
+The shortcuts taken due to time constraints that would be bad practice in production are:
+
+- Only formatting the app to use U.S. phone numbers
+- Not doing more thorough testing that went beyond the basics and what was provided by the SAM CLI creation
+- Not checking to see if I could have been more specific with IAM permissions on the roles used. Cloud providers tout the principle of least privilege and the roles used for Lambda and DynamoDB had full access
+- Not checking to see if a more robust dictionary of words was available
+
+### Instructions to build this project and test locally
+##### Steps
 1. Make sure the following dependencies are installed locally:
 - [DynamoDB](https://aws.amazon.com/dynamodb/)
 - [Python](https://www.python.org/)
@@ -37,7 +50,7 @@ aws dynamodb create-table \
 ##### Use the SAM CLI to build and test locally
 5. Now you can run ```sam build --use-container``` to build the app locally using docker. This command will build the source of your application.
 6. Once that completes you can test the app by running ```sam local invoke "LambdaFunction" -e events/event.json``` If this works correctly you should see some output in the terminal showing vanity numbers for the number currently listed in the ```events/event.json``` file. Feel free to change the number in this file and run the ```sam local invoke...``` command listed above to test and see different output.
-##### Deploy the sample application
+##### Deploy the application
 7. To deploy your application for the first time, run the following ```sam deploy --guided``` This command will package and deploy your application to AWS, with a series of prompts:
 
 * **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
@@ -47,17 +60,10 @@ aws dynamodb create-table \
 * **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
 
 
-### Dependencies
-- [Amazon Connect](https://aws.amazon.com/connect/?nc2=h_ql_prod_ce_con)
-- [AWS Lambda](https://aws.amazon.com/lambda/?nc2=h_ql_prod_fs_lbd)
-- [DynamoDB](https://aws.amazon.com/dynamodb/)
-- [Python](https://www.python.org/)
-- [Docker](https://www.docker.com/)
-- SAM CLI - [AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
-- Git and GitHub
 
 
-## Cleanup
+
+### Cleanup
 
 To delete the sample application that you created, use the AWS CLI. Based on the name used in this application, you can run the following:
 
@@ -68,3 +74,13 @@ aws cloudformation delete-stack --stack-name aws-connect-vanity
 ## Resources
 
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
+
+### Dependencies
+
+- [Amazon Connect](https://aws.amazon.com/connect/?nc2=h_ql_prod_ce_con)
+- [AWS Lambda](https://aws.amazon.com/lambda/?nc2=h_ql_prod_fs_lbd)
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Python](https://www.python.org/)
+- [Docker](https://www.docker.com/)
+- SAM CLI - [AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+- Git and GitHub
