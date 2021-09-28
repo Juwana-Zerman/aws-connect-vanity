@@ -3,19 +3,28 @@
 The purpose of this project is to create a Lambda that converts a caller's phone number to vanity numbers when they call into an Amazon Connect Contact Center. The best 5 resulting vanity numbers along with the caller's number will be saved in a DynamoDB table.
 An Amazon Connect contact flow will be created that looks at the caller's phone number and repeats the vanity possibilities that come back from the Lambda function. The requirements state to provide 3 vanity numbers to the caller, but since the requirements were to get 5 vanity numbers I had the prompt say all 5 since I didn't have time to set up some type of ranking to choose the best of the 5.
 
+### Instructions to build this project and test locally
+
 1. Include explanation for why I chose to implement the solution the way I did and any struggles and problems I had to overcome while implementing the solution.
 2. Did I take any shortcuts that would be a bad practice in productions?
-3. With more time, what other features would I have included? Anything to add for the "real world"?
- - 1. I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits.
- - 2. For ease of implementing, this project only uses US numbers and in the real world a client could need this feature to possibly use international numbers so that would need to be integrated.
- - 3. This feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time. This would require adding a customer input block into the contact flow.
- - 4. Speaking of customer input blocks, maybe a feature could be to ask the caller's input on if they like a certain vanity number response, and if not create another, or let them choose an option to make as many vanity numbers as they like and include an option to exit the feature.
- - 5. I would have liked to check out a more comprehensive dictionary list of words.
+
+####With more time, other features I would have included or implemented for the "real world"!
+ 1. I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits.
+ 2. For ease of implementing, this project only uses US numbers and in the real world a client could need this feature to possibly use international numbers so that would need to be integrated.
+ 3. This feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time. This would require adding a customer input block into the contact flow.
+ 4. Speaking of customer input blocks, maybe a feature could be to ask the caller's input on if they like a certain vanity number response, and if not create another, or let them choose an option to make as many vanity numbers as they like or until the app no longer has vanity numbers to provide. It would be nice to include an option to exit the feature if the caller is allowed to listen to more vanity numbers.
+ 5. I would have liked to check out a more comprehensive dictionary list of words.
+ 6. I would have also liked to test and try different ways to get the voice prompt to pronounce the vanity number output read to the caller. It was not natural sounding and it would need to be for the "real world".
 
 ### Steps
-
+1. Make sure the following dependencies are installed locally:
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Python](https://www.python.org/)
+- [Docker](https://www.docker.com/)
+- SAM CLI - [AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+2. Fork or clone this repository
 ##### Create Local DynamoDB Table (for testing)
-Locally, I used the following script to create a DynamoDB table. The script can be found in the AWS documentation [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.CLI.html).
+3. Locally, I used the following script to create a DynamoDB table. The script can be found in the AWS documentation [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.CLI.html).
 ```
 aws dynamodb create-table \
     --table-name customer_Vanity_Numbers \
@@ -24,6 +33,18 @@ aws dynamodb create-table \
     --key-schema AttributeName=phoneNum,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 ```
+4. Follow the documentation for each resource to get it started and working locally. With your database active, Docker started, and all other resources installed run the following command to change to the directory that the ```template.yaml``` file is located in. ``` cd lambda-python3.9```
+##### Use the SAM CLI to build and test locally
+5. Now you can run ```sam build --use-container``` to build the app locally using docker. This command will build the source of your application.
+6. Once that completes you can test the app by running ```sam local invoke "LambdaFunction" -e events/event.json``` If this works correctly you should see some output in the terminal showing vanity numbers for the number currently listed in the ```events/event.json``` file. Feel free to change the number in this file and run the ```sam local invoke...``` command listed above to test and see different output.
+##### Deploy the sample application
+7. To deploy your application for the first time, run the following ```sam deploy --guided``` This command will package and deploy your application to AWS, with a series of prompts:
+
+* **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
+* **AWS Region**: The AWS region you want to deploy your app to.
+* **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
+* **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
+* **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
 
 
 ### Dependencies
@@ -35,129 +56,15 @@ aws dynamodb create-table \
 - SAM CLI - [AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 - Git and GitHub
 
-###### Code From SAM CLI README.md to Incorporate
-
-AWS Toolkit for VSCode (if needed)
-https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html
-# lambda-python3.9
-
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
-
-- hello_world - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
-- tests - Unit tests for the application code.
-- template.yaml - A template that defines the application's AWS resources.
-
-The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
-
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
-
-
-* [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
-
-
-## Deploy the sample application
-
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
-
-To use the SAM CLI, you need the following tools.
-
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
-
-To build and deploy your application for the first time, run the following in your shell:
-
-```bash
-sam build --use-container
-sam deploy --guided
-```
-
-The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
-
-* **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
-* **AWS Region**: The AWS region you want to deploy your app to.
-* **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
-* **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
-* **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
-
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
-
-## Use the SAM CLI to build and test locally
-
-Build your application with the `sam build --use-container` command.
-
-```bash
-lambda-python3.9$ sam build --use-container
-```
-
-The SAM CLI installs dependencies defined in `hello_world/requirements.txt`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
-
-Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
-
-Run functions locally and invoke them with the `sam local invoke` command.
-
-```bash
-lambda-python3.9$ sam local invoke HelloWorldFunction --event events/event.json
-```
-
-The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
-
-```bash
-lambda-python3.9$ sam local start-api
-lambda-python3.9$ curl http://localhost:3000/
-```
-
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
-
-```yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
-```
-
-## Add a resource to your application
-The application template uses AWS Serverless Application Model (AWS SAM) to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in [the SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
-
-## Fetch, tail, and filter Lambda function logs
-
-To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs` lets you fetch logs generated by your deployed Lambda function from the command line. In addition to printing the logs on the terminal, this command has several nifty features to help you quickly find the bug.
-
-`NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
-
-```bash
-lambda-python3.9$ sam logs -n HelloWorldFunction --stack-name lambda-python3.9 --tail
-```
-
-You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
-
-## Tests
-
-Tests are defined in the `tests` folder in this project. Use PIP to install the test dependencies and run tests.
-
-```bash
-lambda-python3.9$ pip install -r tests/requirements.txt --user
-# unit test
-lambda-python3.9$ python -m pytest tests/unit -v
-# integration test, requiring deploying the stack first.
-# Create the env variable AWS_SAM_STACK_NAME with the name of the stack we are testing
-lambda-python3.9$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
-```
 
 ## Cleanup
 
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
+To delete the sample application that you created, use the AWS CLI. Based on the name used in this application, you can run the following:
 
 ```bash
-aws cloudformation delete-stack --stack-name lambda-python3.9
+aws cloudformation delete-stack --stack-name aws-connect-vanity
 ```
 
 ## Resources
 
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
-
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
