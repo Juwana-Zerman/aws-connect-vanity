@@ -7,12 +7,19 @@ An Amazon Connect contact flow will be created that looks at the caller's phone 
 The live number for this Amazon Connect environment is: **+1 213-737-8507**
 (for a short while)
 
-
+### Why I Chose This Path (and the struggles)
 
 1. Include explanation for why I chose to implement the solution the way I did and any struggles and problems I had to overcome while implementing the solution.
 
+First off this project turned out to be more in-depth than I initially thought it would be. Even though I have done some projects using AWS, my knowledge of the resources used in this project were almost nonexistent. I haven't done anything in AWS in almost a year and felt I needed to get the hang of Amazon Connect, Lambda, and DynamoDB. I spent the 1st few days doing this AWS Training E-Learning Course: https://www.aws.training/Details/eLearning?id=49257 about Amazon Connect and how it integrates with other AWS Resources. While this gave me a chance to try things in the AWS console for Amazon Connect, Lambda, and DynamoDB I realized it would take more than a simple function in there to complete this challenge.
 
-#### With more time, other features I would have included or implemented for the "real world"!
+The training course provided some ```NodeJS``` files for practice, but I found myself looking up ways to do things with ```Python``` in ```Lambda```. While I felt ```NodeJS``` is heavily documented and it would be possible to likely find some NPM packages to help with the algorithm(s) likely needed for this feature, it has been a while since I've used ```NodeJS``` for some front-end development. So I looked for anything in ```Python``` that could help. I found the ```phonenumbers``` module and the ```vanitynumber``` module that included the main files for the REGEX algorithm used to make vanity numbers. It also included a ```Dictionary.txt``` file of words. Those modules can be found at: [vanitynumber](https://pypi.org/project/vanitynumber/) and [phonenumbers](https://pypi.org/project/phonenumbers/). I chose this path since ```Python``` is the language I've been using most recently, and it seemed to require less coding. ```NodeJS``` would have taken me longer to get something into production. (even though I may give it try with another feature just to check out how much I remember about it).
+
+
+
+
+
+### With more time, other features I would have included or implemented for the "real world"!
  1. I would have set up ranking for the vanity numbers to choose numbers that had more words, or only used the last 7 digits.
  2. For ease of implementing, this project only uses US numbers and in the real world a client could need this feature to possibly use international numbers so that would need to be integrated.
  3. This feature would likely be integrated into a more robust contact flow with many choices so maybe this feature could be a choice for a caller to choose while they wait on hold to pass the time. This would require adding a customer input block into the contact flow.
@@ -20,7 +27,7 @@ The live number for this Amazon Connect environment is: **+1 213-737-8507**
  5. I would have liked to check out a more comprehensive dictionary list of words.
  6. I would have also liked to test and try different ways to get the voice prompt to pronounce the vanity number output read to the caller. It was not natural sounding and it would need to be for the "real world".
 
-#### Shortcuts
+### Shortcuts
 The shortcuts taken due to time constraints that would be bad practice in production are:
 
 - Only formatting the app to use U.S. phone numbers
@@ -71,7 +78,7 @@ To delete the sample application that you created, use the AWS CLI. Based on the
 aws cloudformation delete-stack --stack-name aws-connect-vanity
 ```
 
-## Resources
+### Resources
 
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
 
