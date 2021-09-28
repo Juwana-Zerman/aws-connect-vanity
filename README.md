@@ -33,6 +33,7 @@ Overall, I learned a lot of new things embarking on this project. Many of these 
 
 The shortcuts taken due to time constraints that would be bad practice in production are:
 
+- Letting the default name remain during creating the ```SAM CLI``` Lambda function locally (hence the ```lambda-python3.9``` directory name)
 - Only formatting the app to use U.S. phone numbers
 - Not doing more thorough testing that went beyond the basics and what was provided by the SAM CLI creation
 - Not checking to see if I could have been more specific with IAM permissions on the roles used. Cloud providers tout the principle of least privilege and the roles used for Lambda and DynamoDB had full access
