@@ -4,8 +4,8 @@
 The purpose of this project is to create a Lambda that converts a caller's phone number to vanity numbers when they call into an Amazon Connect Contact Center. The best 5 resulting vanity numbers along with the caller's number will be saved in a DynamoDB table.
 An Amazon Connect contact flow will be created that looks at the caller's phone number and repeats the vanity possibilities that come back from the Lambda function. The requirements state to provide 3 vanity numbers to the caller, but since the requirements were to get 5 vanity numbers I had the prompt say all 5 since I didn't have time to set up some type of ranking to choose the best of the 5.
 
-The live number for this Amazon Connect environment is: **+1 213-737-8507**
-(If it errors out call back. I had reports of that happening when I had others try out the number)
+~~The live number for this Amazon Connect environment is: **+1 213-737-8507**
+(If it errors out call back. I had reports of that happening when I had others try out the number)~~
 
 ### Why I Chose This Path (and the struggles)
 
